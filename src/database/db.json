@@ -1,0 +1,30 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "age": 25,
+      "team": "Titan",
+      "name": "John Doe",
+      "credentials": {
+        "username": "fe-applicant",
+        "password": "will-pass"
+      },
+      "jobTitle": "Software Engineer"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "price": 2.0,
+      "name": "Egg roll",
+      "slug": "egg-roll"
+    }
+  ],
+  "checkout-items": [
+    {
+      "orderId": 1,
+      "quantity": 3,
+      "orderBy": "guest"
+    }
+  ]
+}

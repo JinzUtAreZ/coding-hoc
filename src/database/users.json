@@ -1,0 +1,37 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "age": 25,
+      "team": "Titan",
+      "name": "John Doe",
+      "credentials": {
+        "username": "applicant@abc.com",
+        "password": "will-pass"
+      },
+      "jobTitle": "Software Engineer"
+    },
+    {
+      "id": 2,
+      "age": 35,
+      "team": "Killer",
+      "name": "Mary Watson",
+      "credentials": {
+        "username": "interviewer@def.com",
+        "password": "will-succeed"
+      },
+      "jobTitle": "Lead Engineer"
+    },
+    {
+      "id": 1,
+      "age": 25,
+      "team": "Titan",
+      "name": "John Doe",
+      "credentials": {
+        "username": "abc@123.com",
+        "password": "will-pas"
+      },
+      "jobTitle": "Software Engineer"
+    }
+  ]
+}
