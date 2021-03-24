@@ -3,13 +3,14 @@ import { connect } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { createStructuredSelector } from "reselect";
 import About from "../pages/About/About.comp";
-import DataTables from "../pages/Datatables/Datatables.comp";
+import DataTables2 from "../pages/Datatables/DataTables2/TableData.comp";
+import DataTables from "../pages/Datatables/LoadData.comp";
 import Home from "../pages/Home/Home.comp";
 import SignIn from "../pages/Sign/SignIn/SignIn.comp";
 import SignOut from "../pages/Sign/SignOut/SignOut.comp";
 import { setCurrentUser } from "../redux/users/users.actions";
 import { selectCurrentUser } from "../redux/users/users.selectors";
-import Admin from "../routes/admin.routes";
+import Admin from "./admin.routes";
 
 const main = ({ currentUser }) => {
   return (
@@ -24,6 +25,7 @@ const main = ({ currentUser }) => {
       <Route exact path="/about" component={About} />
       <Route exact path="/SignOut" component={SignOut} />
       <Route path="/tables" component={DataTables} />
+      <Route path="/tables2" component={DataTables2} />
       {/* <Route exact path="/ProfReport" component={ProfReport} />
       <Route component={ErrPage} /> */}
     </Switch>

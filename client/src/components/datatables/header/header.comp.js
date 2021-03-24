@@ -1,4 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 
 const Header = ({ headers, onSorting }) => {
@@ -27,9 +26,13 @@ const Header = ({ headers, onSorting }) => {
                 {name}
 
                 {sortingField && sortingField === field && (
-                  <FontAwesomeIcon
-                    icon={sortingOrder === "asc" ? "arrow-down" : "arrow-up"}
-                  />
+                  <span className="icon">
+                    {sortingOrder === "asc" ? (
+                      <i className="fas fa-sort-up"></i>
+                    ) : (
+                      <i className="fas fa-sort-down"></i>
+                    )}
+                  </span>
                 )}
               </th>
             ))}

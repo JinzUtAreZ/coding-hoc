@@ -1,0 +1,26 @@
+{
+  "name": "testcode",
+  "version": "1.0.0",
+  "description": "pratice hoc using hooks and redux",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd ../ && npm start --prefix client",
+    "mock": "json-server --watch db.js --port 5000",
+    "dev": "concurrently \"npm run mock\" \"npm run start\"",
+    "client-install": "npm install --prefix client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JinzUtAreZ/coding-hoc.git"
+  },
+  "author": "Mathew Uy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JinzUtAreZ/coding-hoc/issues"
+  },
+  "homepage": "https://github.com/JinzUtAreZ/coding-hoc#readme",
+  "dependencies": {
+    "concurrently": "^6.0.0",
+    "json-server": "^0.16.3"
+  }
+}
