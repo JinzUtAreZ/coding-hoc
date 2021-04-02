@@ -26,6 +26,8 @@ git bash update instructions
 8. git remote rm origin -- add version and renew link in github.
 9. git config --get remote.origin.url ----- check current github url
 
+10. git reset HEAD~1 (committed but not yet pushed)
+
 node server
 FIX: edit the node js instructions
 
@@ -33,4 +35,3 @@ FIX: edit the node js instructions
 2. npm i express
 3. npm i -D nodemon
 4. npm install -g live-server
-5.

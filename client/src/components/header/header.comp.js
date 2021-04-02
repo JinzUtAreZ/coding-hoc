@@ -57,6 +57,9 @@ const header = ({ currentUser, logOutUser }) => {
         <Link className="headerNavi__option" to="/tables2">
           DataTables 2
         </Link>
+        <Link className="headerNavi__option" to="/tables3">
+          DataTables 3
+        </Link>
       </div>
     </div>
   );

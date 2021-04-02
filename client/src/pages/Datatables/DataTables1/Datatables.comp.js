@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from "react";
-import Header from "../../components/datatables/header/header.comp";
-import { Search, TableHeader } from "../../components/datatables/index";
+import Header from "../../../components/datatables/header/header.comp";
+import { Search, TableHeader } from "../../../components/datatables/index";
 //import useFullPageLoader from "../../hooks/useFullPageLoader";
-import usePagination from "../../hooks/usePagination";
-import "./Datatables.css";
+import usePagination from "../../../hooks/usePagination";
+import "../Datatables.css";
 //import ExternalInfo from "components/ExternalInfo";
 //import AppConfig from "App.config";
 
@@ -13,6 +13,7 @@ const DataTable = ({ data, itemsPerPage, startFrom }) => {
   //const [totalItems, setTotalItems] = useState(0);
   //const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [searchFalse, setSearchFalse] = useState(true);
   const [sorting, setSorting] = useState({ field: "", order: "" });
 
   const {
@@ -21,6 +22,9 @@ const DataTable = ({ data, itemsPerPage, startFrom }) => {
     prevPage,
     nextPage,
     changePage,
+    filteredData,
+    setFilteredData,
+    setSearching,
   } = usePagination({ itemsPerPage, data, startFrom });
 
   //const ITEMS_PER_PAGE = 50;
@@ -49,39 +53,41 @@ const DataTable = ({ data, itemsPerPage, startFrom }) => {
   //   // eslint-disable-next-line
   // }, []);
   //FIX: SEARCHING ISSUE WITH PAGINATION
-  const commentsData = useMemo(() => {
-    let computedComments = data;
-    if (slicedData !== undefined) {
-      computedComments = slicedData;
-    } else {
-      computedComments = data;
-    }
+  const memoTblData = useMemo(() => {
+    let computedData = data;
 
-    if (search) {
-      computedComments = computedComments.filter(
+    if (search.trim() !== "" && searchFalse) {
+      computedData = computedData.filter(
         (comment) =>
           comment.name.toLowerCase().includes(search.toLowerCase()) ||
           comment.email.toLowerCase().includes(search.toLowerCase())
       );
+      setFilteredData(computedData);
+      setSearching(true);
+      setSearchFalse(false);
+    } else if (slicedData !== undefined && search === "") {
+      computedData = slicedData;
+    } else {
+      computedData = data;
     }
 
-    //setTotalItems(computedComments.length);
+    //setTotalItems(computedData.length);
 
     //Sorting comments
     if (sorting.field) {
       const reversed = sorting.order === "asc" ? 1 : -1;
-      computedComments = computedComments.sort(
+      computedData = computedData.sort(
         (a, b) => reversed * a[sorting.field].localeCompare(b[sorting.field])
       );
     }
 
     //Current Page slice
-    return computedComments;
+    return computedData;
     // return computedComments.slice(
     //   (currentPage - 1) * ITEMS_PER_PAGE,
     //   (currentPage - 1) * ITEMS_PER_PAGE + ITEMS_PER_PAGE
     // );
-  }, [data, slicedData, search, sorting]);
+  }, [data, slicedData, filteredData, search, sorting]);
 
   return (
     <>
@@ -118,17 +124,15 @@ const DataTable = ({ data, itemsPerPage, startFrom }) => {
           </div>
 
           <table className="smart-table">
-            {console.log("DT", headers)}
+            {/* {console.log("DT", headers)} */}
             <TableHeader
               headers={headers}
               onSorting={(field, order) => setSorting({ field, order })}
             />
             <tbody>
-              {commentsData.map((comment) => (
-                <tr>
-                  <td data-col-title="ID" key={comment.id}>
-                    {comment.id}
-                  </td>
+              {memoTblData.map((comment) => (
+                <tr key={comment.id}>
+                  <td data-col-title="ID">{comment.id}</td>
                   <td data-col-title="Name">{comment.name}</td>
                   <td data-col-title="Email">{comment.email}</td>
                   <td data-col-title="Body">{comment.body}</td>

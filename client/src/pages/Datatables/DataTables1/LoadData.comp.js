@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import useFullPageLoader from "../../hooks/useFullPageLoader";
+import useFullPageLoader from "../../../hooks/useFullPageLoader";
 import DataTables from "./Datatables.comp";
 
 const LoadData = () => {
