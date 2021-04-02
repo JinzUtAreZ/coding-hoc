@@ -26,7 +26,16 @@ git bash update instructions
 8. git remote rm origin -- add version and renew link in github.
 9. git config --get remote.origin.url ----- check current github url
 
-10. git reset HEAD~1 (committed but not yet pushed)
+# UNCERTAIN CHANGES
+
+1. git reset HEAD~1 (committed but not yet pushed)
+
+# UNTRACK .ENV FILES
+
+1. git rm -r --cached .env
+2. git add .gitignore
+3. git commit -m 'untracking .env'
+4. git push origin master
 
 node server
 FIX: edit the node js instructions
