@@ -25,4 +25,7 @@
 7. create models of all schemas
 8. mongoose can create 'pre' for middleware before mongoose operations, 'statics' for custom function when querying documents, 'methods' for custom data manipulation.
 9. npm i express-jwt
-10.
+10. USER GROUPS (USER, CLIENT, ADMIN )
+    USER GROUP INTO SECTIONS { ADMIN (VIEWER, CREATOR, SUPERADMIN ) }
+    jwtAuth.js is per Admin user revocation,
+    jwtAuthRole.js is per group role

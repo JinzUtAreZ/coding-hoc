@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { token } = require("morgan");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -46,11 +45,16 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  adminType: {
+    type: String, // 0 = Viewer, 1 = Content Creator, 2 = All Access
+    default: "",
+  },
   address: {
     type: String,
     default: "",
   },
   tokens: [
+    // NOTE: refreshtokens
     {
       token: {
         type: String,
@@ -64,7 +68,8 @@ const userSchema = new mongoose.Schema({
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const secret = process.env.SECRET_KEY;
-  //console.log("methods", secret);
+  const refresh = process.env.REFRESH_KEY;
+  //console.log("methods", secret, refresh);
   //const token = jwt.sign({ id: user.id.toString() }, secret);
 
   const token = jwt.sign(
@@ -73,13 +78,39 @@ userSchema.methods.generateAuthToken = async function () {
       isAdmin: user.isAdmin,
     },
     secret,
+    { expiresIn: "1h" }
+  );
+
+  const refreshToken = jwt.sign(
+    {
+      userId: user.id,
+    },
+    refresh,
     { expiresIn: "1d" }
   );
 
-  user.tokens = user.tokens.concat({ token });
-  await user.save();
+  //const userCreate = user;
+  //console.log("methods", token, refreshToken);
 
-  return token;
+  user.tokens = user.tokens.concat({ token: refreshToken });
+  await user.save();
+  return { token, refreshToken };
+};
+
+// NOTE: REFRESH TOKEN CHECKER
+
+userSchema.methods.verifyToken = function (token) {
+  const userDetails = jwt.verify(
+    token,
+    process.env.REFRESH_KEY,
+    (err, user) => {
+      if (err) throw new Error("Forbidden user access");
+      if (!user) throw new Error("Invalid user token");
+      return user;
+    }
+  );
+  //console.log("token", userDetails);
+  return userDetails;
 };
 
 // IMPORTANT: use statics for querying in the documents
@@ -87,11 +118,11 @@ userSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    throw new User("Unable to login");
+    throw new Error("Unable to login");
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
-
+  //console.log("FindCredential", isMatch);
   if (!isMatch) {
     throw new Error("Unable to login");
   }
