@@ -11,7 +11,7 @@ function authorizeRole(...authRoles) {
   } else {
     roles = [...authRoles];
   }
-  console.log(roles);
+  //console.log("Auth-Role",roles);
 
   return [
     // authenticate JWT token and attach user to request object (req.user)

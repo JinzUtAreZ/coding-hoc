@@ -36,7 +36,7 @@ router.get("/:id", authorizeRole("superadmin", "viewer"), async (req, res) => {
   //TODO: particular fields only (name email isAdmin)
   const user = await User.findById(req.params.id).select("-password");
   if (!user) {
-    res.status(500).send({ message: "The user was not found" });
+    res.status(404).send({ message: "The user was not found" });
   }
   res.status(200).send(user);
 });
@@ -103,7 +103,7 @@ router.post("/renewToken", async (req, res) => {
     //console.log(tokenDelete);
     res.status(201).send({ tokenDelete, token, refreshToken }); //TODO: Created
   } catch (err) {
-    res.status(403).send("Invalid user token");
+    res.status(403).send({ message: "Invalid user token" });
   }
 
   // NOTE: DELETE RENEWTOKEN DIRECTLY
@@ -114,12 +114,43 @@ router.post("/renewToken", async (req, res) => {
   // );
 });
 
-// NOTE: LOGOUT USER
-// FIX: pending
+// NOTE: LOGOUT USER PER TOKEN
+
 router.post("/logout/:token", async (req, res) => {
   const token = req.params.token;
+  if (token === null)
+    return res.status("401").send({ message: "User token error" });
+
+  const user = new User();
+  try {
+    const userDetails = await user.verifyToken(token);
+    const userFind = userDetails
+      .findById(userDetails.userId)
+      .select("-password");
+
+    if (!userFind) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    const tokenDelete = await User.findOneAndUpdate(
+      { _id: userFind._id },
+      { $pull: { tokens: { token: renewToken } } },
+      { multi: true }
+    );
+
+    return res.status(200).send({ message: "User has been logged out" });
+  } catch (err) {
+    return res.status(403).send({ message: "User logout error" });
+  }
 
   //const user = await User.findOneAndDelete({ _id: req.params.id });
 });
+
+// NOTE: LOGOUT USER ALL TOKEN
+// FIX: Logout all user tokens for all devices
+router.post("/logout/all/:token"),
+  async (req, res) => {
+    const token = req.params.token;
+  };
 
 module.exports = router;

@@ -1,13 +1,11 @@
 import React, { useMemo, useState } from "react";
 import Header from "../../../components/datatables/header/header.comp";
 import {
-  PaginationOrig,
+  Pagination2,
   Search,
   TableHeader,
 } from "../../../components/datatables/index";
 import "../Datatables.css";
-
-/// FIX: UNAHIN KO MUNA UNG ACCESS TOKEN
 
 const DataTables3 = ({ data, itemsPerPage, startFrom }) => {
   const [comments, setComments] = useState(data);
@@ -16,7 +14,12 @@ const DataTables3 = ({ data, itemsPerPage, startFrom }) => {
   const [search, setSearch] = useState("");
   const [sorting, setSorting] = useState({ field: "", order: "" });
 
-  const ITEMS_PER_PAGE = itemsPerPage;
+  const indexOfLastPost = currentPage * itemsPerPage;
+  const indexOfFirstPost = indexOfLastPost - itemsPerPage;
+  //const currentComments = comments.slice(indexOfFirstPost, indexOfLastPost)
+  const howManyPages = Math.ceil(comments.length / itemsPerPage);
+
+  //const ITEMS_PER_PAGE = itemsPerPage;
 
   const headers = [
     { name: "ID#", field: "id", sortable: false },
@@ -52,7 +55,11 @@ const DataTables3 = ({ data, itemsPerPage, startFrom }) => {
     }
 
     //Current Page slice
-    return computedComments;
+    const indexOfLastPost = currentPage * itemsPerPage;
+    const indexOfFirstPost = indexOfLastPost - itemsPerPage;
+
+    return computedComments.slice(indexOfFirstPost, indexOfLastPost);
+    //return computedComments;
     // return computedComments.slice(
     //   (currentPage - 1) * ITEMS_PER_PAGE,
     //   (currentPage - 1) * ITEMS_PER_PAGE + ITEMS_PER_PAGE
@@ -80,15 +87,14 @@ const DataTables3 = ({ data, itemsPerPage, startFrom }) => {
 
           <div className="row">
             <div className="col">
-              <PaginationOrig
-                // total={totalItems}
+              <Pagination2
+                //PaginationOrig
                 // itemsPerPage={ITEMS_PER_PAGE}
-                // currentPage={currentPage}
-                // onPageChange={(page) => setCurrentPage(page)}
-                itemsPerPage={ITEMS_PER_PAGE}
-                startFrom={startFrom}
-                data={comments}
-                setComments={setComments}
+                // startFrom={startFrom}
+                // data={comments}
+                // setComments={setComments}
+                setCurrentPage={setCurrentPage}
+                pages={howManyPages}
               />
             </div>
           </div>

@@ -1,0 +1,22 @@
+[
+  {
+    "name": "biscuit",
+    "color": "orange"
+  },
+  {
+    "name": "jungle",
+    "color": "black"
+  },
+  {
+    "name": "fancy",
+    "color": "yellow"
+  },
+  {
+    "name": "bread",
+    "color": "grey"
+  },
+  {
+    "name": "crappy",
+    "color": "orange"
+  }
+]
